@@ -6,6 +6,7 @@ using TaskApp.Services.Services.ExchangeRate;
 
 namespace Application.Controllers
 {
+	[Authorize]
 	public class HomeController : Controller
 	{
 		private readonly ILogger<HomeController> _logger;
@@ -17,7 +18,6 @@ namespace Application.Controllers
 			_exchangeRateService = exchangeRateService;
 		}
 
-		[Authorize]
 		public async Task<IActionResult> Index()
 		{
 			var rates = await _exchangeRateService.GetExchangeRatesAsync(DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("yyyy-MM-dd"));
@@ -28,13 +28,6 @@ namespace Application.Controllers
 			};
 
 			return View(viewmodel);
-		}
-
-
-		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-		public IActionResult Error()
-		{
-			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
 		}
 	}
 }

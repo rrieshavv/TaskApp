@@ -12,7 +12,9 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddHttpClient();
 
-builder.Services.AddSingleton(db => new DAO("Server=.;Database=inficaretask;User Id=sa;Password=cook;Trust Server Certificate=True;"));
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddSingleton(db => new DAO(connectionString));
+
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IExchangeRateService, ExchangeRateService>();
 builder.Services.AddScoped<ItransferService, TransferService>();

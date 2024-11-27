@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using TaskApp.Services.Library;
+﻿using TaskApp.Services.Library;
 using TaskApp.Services.Models;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace TaskApp.Services.Services.Transfer
 {

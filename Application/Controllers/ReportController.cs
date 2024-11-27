@@ -6,24 +6,23 @@ using TaskApp.Services.Services.Report;
 
 namespace Application.Controllers
 {
-    [Authorize]
-    public class ReportController : Controller
-    {
-        private readonly IReportService _reportService;
-        public ReportController(IReportService reportService)
-        {
-            _reportService = reportService;
-        }
+	[Authorize]
+	public class ReportController : Controller
+	{
+		private readonly IReportService _reportService;
+		public ReportController(IReportService reportService)
+		{
+			_reportService = reportService;
+		}
 
-        public async Task<IActionResult> Transfers(string fromdate = "", string todate = "")
-        {
+		public async Task<IActionResult> Transfers(string fromdate = "", string todate = "")
+		{
+			if (!string.IsNullOrEmpty(fromdate) && !string.IsNullOrEmpty(todate))
+			{
+				var result = await _reportService.GetTransferResponse(User.Identity.Name, fromdate, todate);
 
-            if (!string.IsNullOrEmpty(fromdate) && !string.IsNullOrEmpty(todate))
-            {
-                var result = await _reportService.GetTransferResponse(User.Identity.Name, fromdate, todate);
-
-                if (result.Any())
-                {
+				if (result.Any())
+				{
 					if (result.FirstOrDefault().Code == 0)
 					{
 						var response = result.MapObjects<TransferData>();
@@ -38,11 +37,11 @@ namespace Application.Controllers
 					}
 				}
 
-                TempData["result"] = "No transfers found.";
-                return View();
-            }
+				TempData["result"] = "No transfers found.";
+				return View();
+			}
 
-            return View();
-        }
-    }
+			return View();
+		}
+	}
 }

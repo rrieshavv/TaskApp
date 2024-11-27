@@ -80,36 +80,43 @@ namespace Application.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Register(RegisterModel registerModel)
 		{
-			if (!ModelState.IsValid)
+			try
 			{
+				if (!ModelState.IsValid)
+				{
+					return View();
+				};
+
+				var requestModel = new UserRegisterModel
+				{
+					Email = registerModel.Email,
+					Password = registerModel.Password1,
+					Firstname = registerModel.Firstname,
+					Lastname = registerModel.Lastname,
+					Middlename = registerModel.Middlename,
+					Phone = registerModel.MobileNumber,
+					Country = registerModel.Country,
+					Address = registerModel.Address,
+				};
+
+				var registerResponse = await _userService.Register(requestModel);
+
+				if (registerResponse.Code == 0)
+				{
+					TempData["success"] = registerResponse.Message;
+					return RedirectToAction("login");
+				}
+				else
+				{
+					TempData["error"] = registerResponse.Message;
+				}
+
 				return View();
-			};
-
-			var requestModel = new UserRegisterModel
+			}catch(Exception ex)
 			{
-				Email = registerModel.Email,
-				Password = registerModel.Password1,
-				Firstname = registerModel.Firstname,
-				Lastname = registerModel.Lastname,
-				Middlename = registerModel.Middlename,
-				Phone = registerModel.MobileNumber,
-				Country = registerModel.Country,
-				Address = registerModel.Address,
-			};
-
-			var registerResponse = await _userService.Register(requestModel);
-
-			if(registerResponse.Code == 0)
-			{
-				TempData["success"] = registerResponse.Message;
-				return RedirectToAction("login");
+				TempData["error"] = "Error occured while registering you.";
+				return View();
 			}
-			else
-			{
-				TempData["error"] = registerResponse.Message;
-			}
-
-			return View();
 		}
 
 		public async Task<IActionResult> Logout()
