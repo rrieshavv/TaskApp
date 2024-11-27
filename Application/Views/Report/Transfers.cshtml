@@ -1,0 +1,136 @@
+﻿@{
+	ViewData["Title"] = "Transfer Report";
+}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+
+@model Application.Models.Report.TransferReportViewModel
+
+<div>
+	<h1 class="display-4">
+		Transfer Report
+	</h1>
+</div>
+
+<div class="card w-100 shadow-sm">
+	<div class="card-body">
+		<h5 class="card-title">Filter</h5>
+		<form class="mt-4" asp-controller="report" asp-action="transfers">
+
+			<div class="row g-3">
+				<div class="col-md-6">
+					<label for="fromDate" class="form-label fw-bold">From Date</label>
+					<input type="date" name="fromdate" class="form-control" id="fromDate" value="{{ DateTime.Now.ToString(" yyyy-MM-dd") }}" onchange="updateMinToDate()">
+				</div>
+				<div class="col-md-6">
+					<label for="toDate" class="form-label fw-bold">To Date</label>
+					<input type="date" name="todate" class="form-control" id="toDate" value="{{ DateTime.Now.ToString(" yyyy-MM-dd") }}">
+				</div>
+			</div>
+
+			<div class="row mt-4">
+				<div class="col">
+					<button type="submit" class="btn btn-primary w-100">
+						<i class="bi bi-search"></i> Search
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+@if (Model != null)
+{
+	@if (Model.TransferData != null)
+	{
+		<div class=" mt-3 ">
+			<div class="d-flex justify-content-end">
+				<button class="btn btn-success btn-sm my-1" onclick="exportToExcel('transferTable', 'TransferReport')">
+					<i class="bi bi-file-earmark-excel"></i> Export To Excel
+				</button>
+			</div>
+			<div style="overflow-x: auto; font-size: 12px;" >
+				<table class="table table-bordered table-striped table-sm" id="transferTable">
+					<thead >
+						<tr class="text-center">
+							<th colspan="3">Sender Info</th>
+							<th colspan="3">Receiver Info</th>
+							<th colspan="5">Payment Details</th>
+						</tr>
+						<tr>
+							<th>Fullname</th>
+							<th>Address</th>
+							<th>Country</th>
+							<th>FullName</th>
+							<th>Address</th>
+							<th>Country</th>
+							<th>BankName</th>
+							<th>TransferAmount</th>
+							<th>ExchangeRate</th>
+							<th>PayoutAmount</th>
+							<th>TransferDate</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var x in Model.TransferData)
+						{
+							<tr>
+								<td>@x.FirstName @x.MiddleName @x.LastName</td>
+								<td>@x.Address</td>
+								<td>@x.Country</td>
+								<td>@x.ReceiverFirstName @x.ReceiverMiddleName @x.ReceiverLastName</td>
+								<td>@x.ReceiverAddress</td>
+								<td>@x.ReceiverCountry</td>
+								<td>@x.BankName</td>
+								<td>@x.TransferAmount @x.TransferIso3</td>
+								<td>@x.exchangeRate</td>
+								<td>@x.payoutAmount @x.PayoutIso3</td>
+								<td>@x.TransferDate</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	}
+}
+
+@if (TempData["result"] != null)
+{
+
+	<div class="alert alert-success mt-3 role="alert">
+		@TempData["result"]
+	</div>
+
+}
+
+
+<script>
+	document.getElementById('fromDate').value = new Date().toISOString().split('T')[0];
+	document.getElementById('toDate').value = new Date().toISOString().split('T')[0];
+
+	function updateMinToDate() {
+		const fromDate = document.getElementById('fromDate').value;
+		const toDate = document.getElementById('toDate');
+
+		toDate.setAttribute('min', fromDate);
+
+		if (toDate.value < fromDate) {
+			toDate.value = fromDate;
+		}
+	}
+
+	updateMinToDate();
+
+	function exportToExcel(tableID, filename = '') {
+		const table = document.getElementById(tableID);
+		const worksheet = XLSX.utils.table_to_sheet(table);
+		const workbook = XLSX.utils.book_new();
+		XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+		const fileName = filename ? `${filename}.xlsx` : 'export.xlsx';
+		XLSX.writeFile(workbook, fileName);
+	}
+
+</script>
+

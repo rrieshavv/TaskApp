@@ -1,0 +1,187 @@
+﻿@{
+	ViewData["Title"] = "Transfer";
+}
+
+@model Application.Models.TransferViewModel
+
+<div>
+	<h1 class="display-4">Transfer Money</h1>
+</div>
+
+<div class="mt-5">
+	@using (Html.BeginForm("Index", "Transfer", FormMethod.Post, new { @class = "needs-validation", @novalidate = "novalidate" }))
+	{
+		@Html.AntiForgeryToken()
+
+		<h5>Sender Information</h5>
+		<hr />
+
+		<div class="">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						@if (!string.IsNullOrEmpty(Model.senderInfo.Firstname))
+						{
+							<th><b>Firstname:</b> @Model.senderInfo.Firstname.ToUpper()</th>
+						}
+
+						@if (!string.IsNullOrEmpty(Model.senderInfo.Middlename))
+						{
+							<th><b>Middlename:</b> 
+								@Model.senderInfo.Middlename.ToUpper()
+							</th>
+						}
+						else
+						{
+							<th>
+								<b><strike>Middlename:</strike></b>
+								@Model.senderInfo.Middlename
+							</th>
+						}
+
+						@if (!string.IsNullOrEmpty(Model.senderInfo.Lastname))
+						{
+							<th><b>Lastname:</b> @Model.senderInfo.Lastname.ToUpper()</th>
+						}
+						<th><b>Country:</b> @Model.senderInfo.Country</th>
+						<th><b>Address:</b> @Model.senderInfo.Address</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+
+		<h5 class="mt-3">Receiver Information</h5>
+		<hr />
+
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group mb-3">
+					@Html.LabelFor(m => m.receiverInfo.Firstname, new { @class = "form-label fw-bold" })
+					<span class="text-danger">*</span>
+					@Html.TextBoxFor(m => m.receiverInfo.Firstname, new { @class = "form-control", placeholder = "Enter receiver's first name" })
+					@Html.ValidationMessageFor(m => m.receiverInfo.Firstname, "", new { @class = "text-danger" })
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group mb-3">
+					@Html.LabelFor(m => m.receiverInfo.Middlename, new { @class = "form-label fw-bold" })
+					@Html.TextBoxFor(m => m.receiverInfo.Middlename, new { @class = "form-control", placeholder = "Enter receiver's middle name" })
+					@Html.ValidationMessageFor(m => m.receiverInfo.Middlename, "", new { @class = "text-danger" })
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group mb-3">
+					@Html.LabelFor(m => m.receiverInfo.Lastname, new { @class = "form-label fw-bold" })
+					<span class="text-danger">*</span>
+					@Html.TextBoxFor(m => m.receiverInfo.Lastname, new { @class = "form-control", placeholder = "Enter receiver's last name" })
+					@Html.ValidationMessageFor(m => m.receiverInfo.Lastname, "", new { @class = "text-danger" })
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group mb-3">
+					@Html.LabelFor(m => m.receiverInfo.Address, new { @class = "form-label fw-bold" })
+					<span class="text-danger">*</span>
+					@Html.TextBoxFor(m => m.receiverInfo.Address, new { @class = "form-control", placeholder = "Enter receiver's address" })
+					@Html.ValidationMessageFor(m => m.receiverInfo.Address, "", new { @class = "text-danger" })
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group mb-3">
+					@Html.LabelFor(m => m.receiverInfo.Country, new { @class = "form-label fw-bold" })
+					<span class="text-danger">*</span>
+					@Html.TextBoxFor(m => m.receiverInfo.Country, new { @class = "form-control", placeholder = "Enter receiver's country" })
+					@Html.ValidationMessageFor(m => m.receiverInfo.Country, "", new { @class = "text-danger" })
+				</div>
+			</div>
+		</div>
+
+		<h5 class="mt-3">Payment Details</h5>
+		<hr />
+
+
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group mb-3">
+					@Html.LabelFor(m => m.paymentDetail.BankName, new { @class = "form-label fw-bold" })
+					<span class="text-danger">*</span>
+					@Html.TextBoxFor(m => m.paymentDetail.BankName, new { @class = "form-control", placeholder = "Enter bank name" })
+					@Html.ValidationMessageFor(m => m.paymentDetail.BankName, "", new { @class = "text-danger" })
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group mb-3">
+					@Html.LabelFor(m => m.paymentDetail.AccountNumber, new { @class = "form-label fw-bold" })
+					<span class="text-danger">*</span>
+					@Html.TextBoxFor(m => m.paymentDetail.AccountNumber, new { @class = "form-control", placeholder = "Enter account number" })
+					@Html.ValidationMessageFor(m => m.paymentDetail.AccountNumber, "", new { @class = "text-danger" })
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group mb-3">
+					<label class="form-label fw-bold">Plan</label>
+					<input class="form-control" disabled value="MYR ➡️ NPR" />
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group mb-3">
+					@Html.LabelFor(m => m.paymentDetail.TransferAmount, new { @class = "form-label fw-bold" })
+					<span class="text-danger">*</span>
+					@Html.TextBoxFor(m => m.paymentDetail.TransferAmount, new { @class = "form-control", id = "TransferAmount", placeholder = "Enter transfer amount" })
+					@Html.ValidationMessageFor(m => m.paymentDetail.TransferAmount, "", new { @class = "text-danger" })
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group mb-3">
+					@Html.LabelFor(m => m.paymentDetail.ExchangeRate, new { @class = "form-label fw-bold" })
+					@Html.TextBoxFor(m => m.paymentDetail.ExchangeRate, new { @class = "form-control", id = "ExchangeRate", @readonly = "readonly" })
+					@Html.ValidationMessageFor(m => m.paymentDetail.ExchangeRate, "", new { @class = "text-danger" })
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group mb-3">
+					@Html.LabelFor(m => m.paymentDetail.PaymentAmount, new { @class = "form-label fw-bold" })
+					@Html.TextBoxFor(m => m.paymentDetail.PaymentAmount, new { @class = "form-control", id = "PaymentAmount", @readonly = "readonly" })
+					@Html.ValidationMessageFor(m => m.paymentDetail.PaymentAmount, "", new { @class = "text-danger" })
+				</div>
+			</div>
+		</div>
+
+
+		<div class="form-group ">
+			<button type="submit" class="btn btn-primary">Send Money</button>
+
+		</div>
+
+
+		@if (TempData["SuccessMessage"] != null)
+		{
+			<div class="alert alert-success mt-3 text-center">
+				@TempData["SuccessMessage"]
+			</div>
+		}
+	}
+
+
+
+</div>
+
+<script>
+	// Function to calculate PaymentAmount
+	function calculatePaymentAmount() {
+		var transferAmount = parseFloat(document.getElementById('TransferAmount').value) || 0;
+		var exchangeRate = parseFloat(document.getElementById('ExchangeRate').value) || 0;
+
+		var paymentAmount = transferAmount * exchangeRate;
+
+		// Set the calculated PaymentAmount value
+		document.getElementById('PaymentAmount').value = paymentAmount.toFixed(2);
+	}
+
+	// Event listeners to trigger calculation on input change
+	document.getElementById('TransferAmount').addEventListener('input', calculatePaymentAmount);
+	document.getElementById('ExchangeRate').addEventListener('input', calculatePaymentAmount);
+</script>

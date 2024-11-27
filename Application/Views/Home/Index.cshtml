@@ -1,0 +1,55 @@
+﻿@{
+	ViewData["Title"] = "Home Page";
+}
+
+@if (TempData["loginSuccess"] is not null)
+{
+	<div class="alert alert-success" role="alert">
+		@TempData["loginSuccess"]
+	</div>
+}
+else if (TempData["transferSuccess"] is not null)
+{
+	<div class="alert alert-success" role="alert">
+		@TempData["transferSuccess"]
+	</div>
+}
+
+@model Application.Models.HomeViewModel
+
+<div>
+	<h1 class="display-4">Money Exhange</h1>
+	<p><small>Last updated: @DateTime.Now.ToString("yyyy/MM/dd hh:mm tt")</small></p>
+</div>
+
+<div class="d-flex">
+	<div class="table-responsive w-50 " style="max-height: 400px;">
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>Currency</th>
+					<th>Unit</th>
+					<th>Buying Rate</th>
+					<th>Selling Rate</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var rate in Model.exchangeRates)
+				{
+					<tr>
+						<td>@rate.Currency.Name</td>
+						<td>@rate.Currency.Unit</td>
+						<td>@rate.Buy</td>
+						<td>@rate.Sell</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+	<div class="m-5 ">
+		<div class="d-flex gap-2">
+			<a asp-controller="transfer" asp-action="index" class="btn btn-primary">Transfer money</a>
+			<a asp-controller="report" asp-action="transfers" class="btn btn-dark">View Transaction</a>
+		</div>
+	</div>
+</div>

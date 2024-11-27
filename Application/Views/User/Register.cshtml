@@ -1,0 +1,121 @@
+﻿@model Application.Models.RegisterModel
+
+@{
+	ViewData["Title"] = "Register";
+}
+
+@if (TempData["error"] is not null)
+{
+	<div class="alert alert-danger" role="alert">
+		@TempData["error"]
+	</div>
+}
+
+<div class="container mt-5">
+	<h2>Register</h2>
+	<hr />
+
+	@using (Html.BeginForm("Register", "User", FormMethod.Post, new { @class = "needs-validation", @novalidate = "novalidate" }))
+	{
+		@Html.AntiForgeryToken()
+
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group mb-3">
+					@Html.LabelFor(m => m.Firstname, new { @class = "form-label fw-bold" })
+					<span class="text-danger">*</span>
+					@Html.TextBoxFor(m => m.Firstname, new { @class = "form-control", placeholder = "Enter your first name" })
+					@Html.ValidationMessageFor(m => m.Firstname, "", new { @class = "text-danger" })
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group mb-3">
+					@Html.LabelFor(m => m.Middlename, new { @class = "form-label fw-bold" })
+					@Html.TextBoxFor(m => m.Middlename, new { @class = "form-control", placeholder = "Enter your middle name" })
+					@Html.ValidationMessageFor(m => m.Middlename, "", new { @class = "text-danger" })
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group mb-3">
+					@Html.LabelFor(m => m.Lastname, new { @class = "form-label fw-bold" })
+					<span class="text-danger">*</span>
+					@Html.TextBoxFor(m => m.Lastname, new { @class = "form-control", placeholder = "Enter your last name" })
+					@Html.ValidationMessageFor(m => m.Lastname, "", new { @class = "text-danger" })
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group mb-3">
+					@Html.LabelFor(m => m.Email, new { @class = "form-label fw-bold" })
+					<span class="text-danger">*</span>
+					@Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Enter your email" })
+					@Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group mb-3">
+					@Html.LabelFor(m => m.MobileNumber, new { @class = "form-label fw-bold" })
+					<span class="text-danger">*</span>
+					@Html.TextBoxFor(m => m.MobileNumber, new { @class = "form-control", placeholder = "Enter your mobile number" })
+					@Html.ValidationMessageFor(m => m.MobileNumber, "", new { @class = "text-danger" })
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group mb-3">
+					@Html.LabelFor(m => m.Country, new { @class = "form-label fw-bold" })
+					<span class="text-danger">*</span>
+					@Html.TextBoxFor(m => m.Country, new { @class = "form-control", placeholder = "Enter your country" })
+					@Html.ValidationMessageFor(m => m.Country, "", new { @class = "text-danger" })
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group mb-3">
+					@Html.LabelFor(m => m.Address, new { @class = "form-label fw-bold" })
+					<span class="text-danger">*</span>
+					@Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Enter your address" })
+					@Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group mb-3">
+					@Html.LabelFor(m => m.Password1, new { @class = "form-label fw-bold" })
+					<span class="text-danger">*</span>
+					@Html.PasswordFor(m => m.Password1, new { @class = "form-control", placeholder = "Enter your password" })
+					@Html.ValidationMessageFor(m => m.Password1, "", new { @class = "text-danger" })
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group mb-3">
+					@Html.LabelFor(m => m.Password2, new { @class = "form-label fw-bold" })
+					<span class="text-danger">*</span>
+					@Html.PasswordFor(m => m.Password2, new { @class = "form-control", placeholder = "Confirm your password" })
+					@Html.ValidationMessageFor(m => m.Password2, "", new { @class = "text-danger" })
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group ">
+			<button type="submit" class="btn btn-primary">Register</button>
+
+		</div>
+
+		<p class="mt-3">Already have an account? @Html.ActionLink("Click here to login", "Login", "User")</p>
+
+
+		@if (TempData["SuccessMessage"] != null)
+		{
+			<div class="alert alert-success mt-3 text-center">
+				@TempData["SuccessMessage"]
+			</div>
+		}
+	}
+</div>
+
