@@ -33,6 +33,16 @@ Before you begin, ensure you have met the following requirements:
     ```json
     "ConnectionStrings": {
         "Default": "Data Source=.;Initial Catalog=inficaretask;Persist Security Info=True;User ID=sa;Password=***;Encrypt=False;Trust Server Certificate=True"
-    },
+    }
     ```
-4.
+4. **Run the application with the following command.**
+    ```bash
+        cd Application/
+        dotnet build
+        dotnet run
+    ```
+      **The application will start at http://localhost:5138** 
+
+### Highlights
+
+- Login Page
