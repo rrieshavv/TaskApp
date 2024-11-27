@@ -43,6 +43,3 @@ Before you begin, ensure you have met the following requirements:
     ```
       **The application will start at http://localhost:5138** 
 
-### Highlights
-
-- Login Page
