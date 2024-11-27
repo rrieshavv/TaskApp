@@ -16,9 +16,7 @@ The project is designed to stimulate a money transfer application. The main feat
 
 ### Prerequisites
 Before you begin, ensure you have met the following requirements:
-- Windows OS
 - The system must have dotnet environment installed.
-- [Dependencies] (e.g., node package manager (npm))
 
 ### Installation steps
 
