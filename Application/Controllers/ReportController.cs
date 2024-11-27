@@ -17,31 +17,39 @@ namespace Application.Controllers
 
 		public async Task<IActionResult> Transfers(string fromdate = "", string todate = "")
 		{
-			if (!string.IsNullOrEmpty(fromdate) && !string.IsNullOrEmpty(todate))
+			try
 			{
-				var result = await _reportService.GetTransferResponse(User.Identity.Name, fromdate, todate);
-
-				if (result.Any())
+				if (!string.IsNullOrEmpty(fromdate) && !string.IsNullOrEmpty(todate))
 				{
-					if (result.FirstOrDefault().Code == 0)
+					var result = await _reportService.GetTransferResponse(User.Identity.Name, fromdate, todate);
+
+					if (result.Any())
 					{
-						var response = result.MapObjects<TransferData>();
-
-						var tranferViewModel = new TransferReportViewModel
+						if (result.FirstOrDefault().Code == 0)
 						{
-							TransferData = response
-						};
+							var response = result.MapObjects<TransferData>();
 
-						TempData["success"] = result.FirstOrDefault().Message;
-						return View(tranferViewModel);
+							var tranferViewModel = new TransferReportViewModel
+							{
+								TransferData = response
+							};
+
+							TempData["success"] = result.FirstOrDefault().Message;
+							return View(tranferViewModel);
+						}
 					}
+
+					TempData["result"] = "No transfers found.";
+					return View();
 				}
 
-				TempData["result"] = "No transfers found.";
 				return View();
 			}
-
-			return View();
+			catch (Exception ex)
+			{
+				TempData["result"] = "Error processing your request";
+				return View();
+			}
 		}
 	}
 }

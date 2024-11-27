@@ -20,14 +20,20 @@ namespace Application.Controllers
 
 		public async Task<IActionResult> Index()
 		{
-			var rates = await _exchangeRateService.GetExchangeRatesAsync(DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("yyyy-MM-dd"));
-
-			var viewmodel = new HomeViewModel
+			try
 			{
-				exchangeRates = rates
-			};
+				var rates = await _exchangeRateService.GetExchangeRatesAsync(DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("yyyy-MM-dd"));
 
-			return View(viewmodel);
+				var viewmodel = new HomeViewModel
+				{
+					exchangeRates = rates
+				};
+
+				return View(viewmodel);
+			}catch(Exception ex)
+			{
+				return RedirectToAction("index", "error");
+			}
 		}
 	}
 }

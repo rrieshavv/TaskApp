@@ -8,6 +8,13 @@
 	<h1 class="display-4">Transfer Money</h1>
 </div>
 
+@if (TempData["error"] is not null)
+{
+	<div class="alert alert-danger" role="alert">
+		@TempData["error"]
+	</div>
+}
+
 <div class="mt-5">
 	@using (Html.BeginForm("Index", "Transfer", FormMethod.Post, new { @class = "needs-validation", @novalidate = "novalidate" }))
 	{
